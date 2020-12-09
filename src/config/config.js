@@ -5,9 +5,13 @@ const headers = {
 };
 
 const api = axios.create({
-  baseURL: 'https://my.api.mockaroo.com/',
+  baseURL: 'https://rickandmortyapi.com/api/',
   timeout: 30000,
   headers,
 });
+
+export const apiUrls = {
+  characters: 'character',
+};
 
 export default api;

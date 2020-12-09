@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {BackHandler, FlatList, Alert} from 'react-native';
+import {BackHandler, FlatList, Alert, Text} from 'react-native';
 
 import {BoxSafe, Box} from '../../atomic/atoms/Spaces';
 
@@ -9,13 +9,13 @@ import Button from '../../atomic/atoms/Button';
 import colors from '../../atomic/constants/colors';
 import {connect} from 'react-redux';
 
-import * as equipamentsAction from '../../redux/actions/equipamentsActions';
+import * as charactersAction from '../../redux/actions/charactersActions';
 
 import {filter} from 'lodash';
 
 import CardEquipaments from '../../atomic/molecules/CardEquipaments';
 
-function Home({navigation, _getCharacters, darkMode, dataEquipaments}) {
+function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
   //handling with back press
   const backAction = () => {
     Alert.alert('Ops!', 'Are you sure you want to quit?', [
@@ -76,20 +76,22 @@ function Home({navigation, _getCharacters, darkMode, dataEquipaments}) {
   return (
     <>
       <Header backButton={false} title="Characters" navigation={navigation} />
-      <BoxSafe bg={darkMode ? '' : colors.white}>
+      <BoxSafe bg={darkMode ? '' : colors.gold}>
         <Box pr={8} pl={8} pt={8} bg={'transparent'}>
-          {dataEquipaments.isLoading ? (
-            <Loading name={'spinner'} size={30} color={colors.darkGreen}></Loading>
+          {dataCharacters.isLoading ? (
+            <Loading name={'spinner'} size={30} color={darkMode ? colors.white : colors.gold}></Loading>
           ) : (
             <>
               <FlatList
-                data={dataEquipaments.data}
+                data={dataCharacters.data}
                 keyExtractor={(item) => item.name}
                 renderItem={renderItem}
                 onEndReachedThreshold={0.01}
               />
             </>
           )}
+
+          <Text>{JSON.stringify(dataCharacters)}</Text>
         </Box>
         <Box pr={8} pl={8} pt={8} flex={0.1} bg={'transparent'}>
           <Button
@@ -108,7 +110,7 @@ function Home({navigation, _getCharacters, darkMode, dataEquipaments}) {
 }
 
 const mapStateToProps = (state) => ({
-  dataEquipaments: state.equipamentsReducer,
+  dataCharacters: state.charactersReducer,
   darkMode: state.appReducer.darkMode,
 });
 
@@ -116,7 +118,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
 
     _getCharacters: () => {
-
+      dispatch(charactersAction.CharactersRequest());
     },
 
     _getEquipaments: () => {
