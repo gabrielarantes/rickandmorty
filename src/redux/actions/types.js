@@ -1,0 +1,13 @@
+//app
+export const APP_SET_DARK_MODE = 'APP_SET_DARK_MODE';
+
+//net info
+export const NET_INFO_REQUEST = 'NET_INFO_REQUEST';
+export const NET_INFO_SUCCESS = 'NET_INFO_SUCCESS';
+export const NET_INFO_FAILED = 'NET_INFO_FAILED';
+
+//equipments
+export const EQUIPAMENTS_REQUEST = 'EQUIPAMENTS_REQUEST';
+export const EQUIPAMENTS_SUCCESS = 'EQUIPAMENTS_SUCCESS';
+export const EQUIPAMENTS_FAILED = 'EQUIPAMENTS_FAILED';
+
