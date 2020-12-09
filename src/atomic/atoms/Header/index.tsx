@@ -38,7 +38,7 @@ function Header({navigation, title, backButton, _setDarkMode, darkMode}) {
       <View
         style={{
           flexDirection: 'row',
-          backgroundColor: darkMode ? colors.graffit : colors.white,
+          backgroundColor: darkMode ? colors.graffit : colors.gold,
           padding: 20,
           paddingTop: Platform.OS === 'ios' ? 50 : 20,
           justifyContent: 'center',
@@ -52,14 +52,14 @@ function Header({navigation, title, backButton, _setDarkMode, darkMode}) {
             <Icons
               name="chevron-left"
               size={18}
-              color={darkMode ? colors.gold : colors.darkGreen}
+              color={darkMode ? colors.gold : colors.black}
             />
           </BackButton>
         )}
 
         <TextRegular
           align={'center'}
-          color={darkMode ? colors.gold : colors.darkGreen}>
+          color={darkMode ? colors.gold : colors.black}>
           {title}
         </TextRegular>
 
@@ -74,12 +74,12 @@ function Header({navigation, title, backButton, _setDarkMode, darkMode}) {
             style={{marginTop: 5, marginRight: 7}}
             name="sun-o"
             size={20}
-            color={darkMode ? colors.gold : colors.darkGreen}
+            color={darkMode ? colors.gold : colors.black}
           />
           <Switch
-            trackColor={{false: colors.gray, true: colors.gray}}
-            thumbColor={darkMode ? colors.gold : colors.white}
-            ios_backgroundColor={colors.darkGreen}
+            trackColor={{false: colors.lightGray, true: colors.gray}}
+            thumbColor={darkMode ? colors.gold : colors.lightGray}
+            ios_backgroundColor={colors.black}
             onValueChange={toggleSwitch}
             value={darkMode}
           />
@@ -87,7 +87,7 @@ function Header({navigation, title, backButton, _setDarkMode, darkMode}) {
             style={{marginTop: 5, marginLeft: 7}}
             name="moon-o"
             size={20}
-            color={darkMode ? colors.gold : colors.darkGreen}
+            color={darkMode ? colors.gold : colors.black}
           />
         </View>
       </View>

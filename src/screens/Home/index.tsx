@@ -75,7 +75,7 @@ function Home({navigation, _getCharacters, darkMode, dataEquipaments}) {
 
   return (
     <>
-      <Header backButton={false} title="CHECKLIST" navigation={navigation} />
+      <Header backButton={false} title="Characters" navigation={navigation} />
       <BoxSafe bg={darkMode ? '' : colors.white}>
         <Box pr={8} pl={8} pt={8} bg={'transparent'}>
           {dataEquipaments.isLoading ? (
