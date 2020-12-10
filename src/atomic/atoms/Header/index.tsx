@@ -13,6 +13,8 @@ import Icons from '../../atoms/Icons';
 
 import {BackButton, SnackBar} from './styles';
 
+import {verifyDarkMode} from '../../../config/functions'
+
 function Header({navigation, title, backButton, _setDarkMode, darkMode}) {
   //handling with net
   const netInfo = useNetInfo();

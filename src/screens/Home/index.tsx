@@ -9,11 +9,13 @@ import Button from '../../atomic/atoms/Button';
 import colors from '../../atomic/constants/colors';
 import {connect} from 'react-redux';
 
+import {verifyDarkMode} from '../../config/functions';
+
 import * as charactersAction from '../../redux/actions/charactersActions';
 
 import {filter} from 'lodash';
 
-import CardEquipaments from '../../atomic/molecules/CardEquipaments';
+import CardCharacter from '../../atomic/molecules/CardCharacter';
 
 function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
   //handling with back press
@@ -44,7 +46,7 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
     let arr = items;
 
     if (value) {
-      let newData = [...arr, item]
+      let newData = [...arr, item];
       setItems(newData);
     } else {
       let filtered = filter(arr, function (n) {
@@ -59,7 +61,7 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
     const {name} = item;
 
     return (
-      <CardEquipaments
+      <CardCharacter
         navigation={navigation}
         object={item}
         manageItems={manageItems}
@@ -70,8 +72,11 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
 
   //checking the list
   const check = () => {
-    Alert.alert('Congratulations','Everything is alright\nYou can start your job');
-  }
+    Alert.alert(
+      'Congratulations',
+      'Everything is alright\nYou can start your job',
+    );
+  };
 
   return (
     <>
@@ -79,29 +84,35 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
       <BoxSafe bg={darkMode ? '' : colors.gold}>
         <Box pr={8} pl={8} pt={8} bg={'transparent'}>
           {dataCharacters.isLoading ? (
-            <Loading name={'spinner'} size={30} color={darkMode ? colors.white : colors.gold}></Loading>
+            <Loading
+              name={'spinner'}
+              size={30}
+              color={verifyDarkMode(
+                darkMode,
+                colors.white,
+                colors.gold,
+              )}></Loading>
           ) : (
             <>
               <FlatList
-                data={dataCharacters.data}
+                numColumns={2}
+                data={dataCharacters.data.results}
                 keyExtractor={(item) => item.name}
                 renderItem={renderItem}
                 onEndReachedThreshold={0.01}
               />
             </>
           )}
-
-          <Text>{JSON.stringify(dataCharacters)}</Text>
         </Box>
         <Box pr={8} pl={8} pt={8} flex={0.1} bg={'transparent'}>
           <Button
-            bgColor={ darkMode ? colors.gold : colors.darkGreen }
-            name="Check"
+            bgColor={verifyDarkMode(darkMode, colors.gold, colors.black)}
+            name="Next Page"
             fontSize={18}
-            textColor={colors.white}
+            textColor={verifyDarkMode(darkMode, colors.black, colors.gold)}
             radius={6}
             onPress={check}
-            disable={items.length === 5 ? false : true}
+            disable={false}
           />
         </Box>
       </BoxSafe>
@@ -116,13 +127,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
     _getCharacters: () => {
       dispatch(charactersAction.CharactersRequest());
-    },
-
-    _getEquipaments: () => {
-      dispatch(equipamentsAction.EquipamentsRequest());
     },
   };
 };
