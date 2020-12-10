@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {BackHandler, FlatList, Alert, Text} from 'react-native';
+import {BackHandler, FlatList, Alert, Text, TextInput} from 'react-native';
 
 import {BoxSafe, Box} from '../../atomic/atoms/Spaces';
 
@@ -13,9 +13,10 @@ import {verifyDarkMode} from '../../config/functions';
 
 import * as charactersAction from '../../redux/actions/charactersActions';
 
-import {filter, isNull} from 'lodash';
+import {filter, isNull, isEmpty} from 'lodash';
 
 import CardCharacter from '../../atomic/molecules/CardCharacter';
+import {TextRegular} from '../../atomic/atoms/Titles';
 
 function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
   //handling with back press
@@ -41,6 +42,7 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
   }, []);
 
   const [items, setItems] = useState([]);
+  const [searchText, setSearchText] = useState(null);
 
   useEffect(() => {
     setItems(dataCharacters.data);
@@ -48,8 +50,6 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
 
   //render item
   const renderItem = ({item}) => {
-    const {name} = item;
-
     return (
       <CardCharacter
         navigation={navigation}
@@ -66,26 +66,48 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
       : _getCharacters(items.info.next);
   };
 
+  //search character
+  const searchCharacter = () => {
+    let searchWord = `https://rickandmortyapi.com/api/character/?name=${searchText}`;
+
+    console.log(searchWord);
+
+    _getCharacters(searchWord);
+  };
+
   return (
     <>
       <Header backButton={false} title="Characters" navigation={navigation} />
       <BoxSafe bg={darkMode ? '' : colors.gold}>
         <Box pr={8} pl={8} pt={8} bg={'transparent'}>
+          {/* <TextInput
+            value={searchText}
+            onChangeText={(txt) => {
+              setSearchText(txt);
+              searchCharacter();
+            }}
+            style={{
+              padding: 15,
+              borderBottomWidth: 1,
+              marginBottom: 20,
+            }}
+          /> */}
+
           {dataCharacters.isLoading ? (
             <Loading
               name={'spinner'}
               size={30}
               color={verifyDarkMode(
                 darkMode,
-                colors.white,
                 colors.gold,
+                colors.black,
               )}></Loading>
           ) : (
             <>
               <FlatList
                 numColumns={2}
                 data={dataCharacters.data.results}
-                keyExtractor={ (item) => item.id }
+                keyExtractor={(item) => item.id}
                 renderItem={renderItem}
                 onEndReachedThreshold={0.01}
               />
@@ -95,7 +117,8 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
         {dataCharacters.isLoading ? (
           <></>
         ) : (
-          <Box
+          <>
+            <Box
             pr={8}
             style={{justifyContent: 'space-between'}}
             pl={8}
@@ -130,6 +153,7 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
               width={'49%'}
             />
           </Box>
+          </>
         )}
       </BoxSafe>
     </>

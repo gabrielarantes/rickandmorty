@@ -4,7 +4,7 @@ import * as charactersAction from '../../actions/charactersActions';
 
 import api, {apiUrls} from '../../../config/config';
 
-import {isNull} from 'lodash';
+import {isNull, isEmpty} from 'lodash';
 
 const url = apiUrls.characters;
 
