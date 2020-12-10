@@ -7,14 +7,21 @@ import {TextRegular} from '../../atoms/Titles';
 
 import normalize from 'react-native-normalize';
 
-function CardCharacters({object, navigation, manageItems, darkMode}) {
-
+function CardCharacters({object, navigation, darkMode}) {
   return (
     <>
-      <Box border={16} pb={1} ml={2} mr={2} mb={15} bg={darkMode ? colors.gold : colors.black}>
+      <BoxTouchable
+        onPress={() => {
+          navigation.navigate('Character', {data: object});
+        }}
+        border={16}
+        pb={1}
+        ml={2}
+        mr={2}
+        mb={15}
+        bg={darkMode ? colors.gold : colors.black}>
         <Image
-        resizeMethod={'resize'}
-          
+          resizeMethod={'resize'}
           style={{width: normalize(200), height: normalize(200)}}
           source={{uri: object.image}}
         />
@@ -26,7 +33,7 @@ function CardCharacters({object, navigation, manageItems, darkMode}) {
           mb={6}>
           {object.name}
         </TextRegular>
-      </Box>
+      </BoxTouchable>
     </>
   );
 }

@@ -20,6 +20,8 @@ const Button = ({
   mt,
   mb,
   pb,
+  mr,
+  ml,
   radius,
   borderColor,
   accessibilityLabel,

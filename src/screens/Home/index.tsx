@@ -13,7 +13,7 @@ import {verifyDarkMode} from '../../config/functions';
 
 import * as charactersAction from '../../redux/actions/charactersActions';
 
-import {filter} from 'lodash';
+import {filter, isNull} from 'lodash';
 
 import CardCharacter from '../../atomic/molecules/CardCharacter';
 
@@ -85,7 +85,7 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
               <FlatList
                 numColumns={2}
                 data={dataCharacters.data.results}
-                keyExtractor={(item) => item.name}
+                keyExtractor={ (item) => item.id }
                 renderItem={renderItem}
                 onEndReachedThreshold={0.01}
               />
@@ -95,7 +95,14 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
         {dataCharacters.isLoading ? (
           <></>
         ) : (
-          <Box pr={8} pl={8} pt={8} flex={0.1} fd={'row'} bg={'transparent'}>
+          <Box
+            pr={8}
+            style={{justifyContent: 'space-between'}}
+            pl={8}
+            pt={8}
+            flex={0.1}
+            fd={'row'}
+            bg={'transparent'}>
             <Button
               bgColor={verifyDarkMode(darkMode, colors.gold, colors.black)}
               name="Previous Page"
@@ -105,8 +112,9 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
               onPress={() => {
                 paginate('prev');
               }}
-              disable={false}
-              width={'45%'}
+              disable={isNull(dataCharacters.data.info.prev) ? true : false}
+              width={'49%'}
+              mr={2}
             />
 
             <Button
@@ -118,8 +126,8 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
               onPress={() => {
                 paginate('next');
               }}
-              disable={false}
-              width={'45%'}
+              disable={isNull(dataCharacters.data.info.next) ? true : false}
+              width={'49%'}
             />
           </Box>
         )}
@@ -135,8 +143,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    _getCharacters: ( url ) => {
-      dispatch(charactersAction.CharactersRequest( url ));
+    _getCharacters: (url) => {
+      dispatch(charactersAction.CharactersRequest(url));
     },
   };
 };
