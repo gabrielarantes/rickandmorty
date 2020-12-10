@@ -4,12 +4,18 @@ import * as charactersAction from '../../actions/charactersActions';
 
 import api, {apiUrls} from '../../../config/config';
 
+import {isNull} from 'lodash';
+
 const url = apiUrls.characters;
 
-export function* getCharacters() {
-
+export function* getCharacters(givenUrl) {
   try {
-    const response = yield call(api.get, url);
+    const response = yield call(
+      api.get,
+      isNull(givenUrl.data)
+        ? url
+        : givenUrl.data.replace('https://rickandmortyapi.com/api/', ''),
+    );
 
     let {success} = response.data;
     if (success) {

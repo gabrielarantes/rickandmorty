@@ -32,7 +32,7 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
   };
 
   useEffect(() => {
-    _getCharacters();
+    _getCharacters(null);
 
     BackHandler.addEventListener('hardwareBackPress', backAction);
 
@@ -42,19 +42,9 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
 
   const [items, setItems] = useState([]);
 
-  const manageItems = (item, value) => {
-    let arr = items;
-
-    if (value) {
-      let newData = [...arr, item];
-      setItems(newData);
-    } else {
-      let filtered = filter(arr, function (n) {
-        return n !== item;
-      });
-      setItems(filtered);
-    }
-  };
+  useEffect(() => {
+    setItems(dataCharacters.data);
+  }, [dataCharacters.data.results]);
 
   //render item
   const renderItem = ({item}) => {
@@ -64,18 +54,16 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
       <CardCharacter
         navigation={navigation}
         object={item}
-        manageItems={manageItems}
         darkMode={darkMode}
       />
     );
   };
 
-  //checking the list
-  const check = () => {
-    Alert.alert(
-      'Congratulations',
-      'Everything is alright\nYou can start your job',
-    );
+  //paginating
+  const paginate = (goTo) => {
+    goTo === 'prev'
+      ? _getCharacters(items.info.prev)
+      : _getCharacters(items.info.next);
   };
 
   return (
@@ -104,17 +92,37 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
             </>
           )}
         </Box>
-        <Box pr={8} pl={8} pt={8} flex={0.1} bg={'transparent'}>
-          <Button
-            bgColor={verifyDarkMode(darkMode, colors.gold, colors.black)}
-            name="Next Page"
-            fontSize={18}
-            textColor={verifyDarkMode(darkMode, colors.black, colors.gold)}
-            radius={6}
-            onPress={check}
-            disable={false}
-          />
-        </Box>
+        {dataCharacters.isLoading ? (
+          <></>
+        ) : (
+          <Box pr={8} pl={8} pt={8} flex={0.1} fd={'row'} bg={'transparent'}>
+            <Button
+              bgColor={verifyDarkMode(darkMode, colors.gold, colors.black)}
+              name="Previous Page"
+              fontSize={18}
+              textColor={verifyDarkMode(darkMode, colors.black, colors.gold)}
+              radius={6}
+              onPress={() => {
+                paginate('prev');
+              }}
+              disable={false}
+              width={'45%'}
+            />
+
+            <Button
+              bgColor={verifyDarkMode(darkMode, colors.gold, colors.black)}
+              name="Next Page"
+              fontSize={18}
+              textColor={verifyDarkMode(darkMode, colors.black, colors.gold)}
+              radius={6}
+              onPress={() => {
+                paginate('next');
+              }}
+              disable={false}
+              width={'45%'}
+            />
+          </Box>
+        )}
       </BoxSafe>
     </>
   );
@@ -127,8 +135,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    _getCharacters: () => {
-      dispatch(charactersAction.CharactersRequest());
+    _getCharacters: ( url ) => {
+      dispatch(charactersAction.CharactersRequest( url ));
     },
   };
 };
