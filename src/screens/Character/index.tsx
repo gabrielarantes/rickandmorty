@@ -8,11 +8,6 @@ import {TextRegular} from '../../atomic/atoms/Titles';
 import colors from '../../atomic/constants/colors';
 import {connect} from 'react-redux';
 
-import {verifyDarkMode} from '../../config/functions';
-
-import * as charactersAction from '../../redux/actions/charactersActions';
-import {NavigationHelpersContext} from '@react-navigation/native';
-
 function Character({route, navigation, darkMode}) {
   const {data} = route.params;
 
@@ -77,11 +72,10 @@ function Character({route, navigation, darkMode}) {
                 return (
                   <BoxTouchable
                     onPress={() => {
-                      navigation.navigate('Episode', {id: item.id});
-                    }}
-                    style={{
-                      borderBottomWidth: 1,
-                      borderBottomColor: darkMode ? colors.gold : colors.black,
+                      navigation.navigate('Episode', {id: item.replace(
+                        'https://rickandmortyapi.com/api/episode/',
+                        '',
+                      )});
                     }}
                     pt={5}
                     pb={5}
@@ -116,11 +110,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    _getCharacters: (url) => {
-      dispatch(charactersAction.CharactersRequest(url));
-    },
-  };
+  return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Character);

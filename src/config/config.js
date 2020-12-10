@@ -12,6 +12,7 @@ const api = axios.create({
 
 export const apiUrls = {
   characters: 'character',
+  episode : 'episode'
 };
 
 export default api;

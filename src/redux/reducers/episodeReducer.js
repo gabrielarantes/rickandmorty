@@ -6,15 +6,15 @@ const initialState = {
   data: [],
 };
 
-export const equipamentsReducer = createReducer(initialState, {
-  [types.EQUIPAMENTS_REQUEST](state) {
+export const episodeReducer = createReducer(initialState, {
+  [types.EPISODE_REQUEST](state) {
     return {
       ...state,
       isLoading: true,
     };
   },
 
-  [types.EQUIPAMENTS_SUCCESS](state, action) {
+  [types.EPISODE_SUCCESS](state, action) {
     return {
       ...state,
       isLoading: false,
@@ -22,7 +22,7 @@ export const equipamentsReducer = createReducer(initialState, {
     };
   },
 
-  [types.EQUIPAMENTS_FAILED](state, action) {
+  [types.EPISODE_FAILED](state, action) {
     return {
       ...state,
       isLoading: false,
