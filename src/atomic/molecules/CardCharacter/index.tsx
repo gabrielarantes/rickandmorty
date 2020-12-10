@@ -5,19 +5,24 @@ import colors from '../../constants/colors';
 import {Box, BoxTouchable} from '../../atoms/Spaces';
 import {TextRegular} from '../../atoms/Titles';
 
+import normalize from 'react-native-normalize';
+
 function CardCharacters({object, navigation, manageItems, darkMode}) {
-  const margin = 16;
 
   return (
     <>
-      <Box pt={5} pl={6} pb={16} bg={'transparent'} fd={'row'} mb={15}>
-        <Image style={{width: 36, height: 36}} source={{uri: object.image}} />
+      <Box border={16} pb={1} ml={2} mr={2} mb={15} bg={darkMode ? colors.gold : colors.black}>
+        <Image
+        resizeMethod={'resize'}
+          
+          style={{width: normalize(200), height: normalize(200)}}
+          source={{uri: object.image}}
+        />
 
         <TextRegular
-          color={darkMode ? colors.white : colors.darkGreen}
-          size={16}
+          color={darkMode ? colors.black : colors.gold}
+          size={15}
           mt={6}
-          ml={12}
           mb={6}>
           {object.name}
         </TextRegular>

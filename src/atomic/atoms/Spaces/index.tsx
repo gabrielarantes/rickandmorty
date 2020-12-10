@@ -27,6 +27,7 @@ export const Box = styled.View`
 
   border-radius: ${(props) => (props.border ? props.border : 0)}px;
   overflow: ${(props) => (props.overflow ? props.overflow : 'hidden')};
+  
 `;
 
 export const BoxTouchable = styled.TouchableOpacity`
