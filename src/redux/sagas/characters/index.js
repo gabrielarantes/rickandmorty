@@ -24,6 +24,7 @@ export function* getCharacters(givenUrl) {
       yield put(charactersAction.CharactersFailed(response.data));
     }
   } catch (error) {
-    yield put(charactersAction.CharactersFailed(error));
+    console.log(error.response.data)
+    yield put(charactersAction.CharactersFailed(error.response.data));
   }
 }

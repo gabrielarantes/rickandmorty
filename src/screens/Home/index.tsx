@@ -17,6 +17,7 @@ import {filter, isNull, isEmpty} from 'lodash';
 
 import CardCharacter from '../../atomic/molecules/CardCharacter';
 import {TextRegular} from '../../atomic/atoms/Titles';
+import {ScrollView} from 'react-native-gesture-handler';
 
 function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
   //handling with back press
@@ -80,7 +81,7 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
       <Header backButton={false} title="Characters" navigation={navigation} />
       <BoxSafe bg={darkMode ? '' : colors.gold}>
         <Box pr={8} pl={8} pt={8} bg={'transparent'}>
-          {/* <TextInput
+          <TextInput
             value={searchText}
             onChangeText={(txt) => {
               setSearchText(txt);
@@ -90,8 +91,12 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
               padding: 15,
               borderBottomWidth: 1,
               marginBottom: 20,
+
+              borderColor : verifyDarkMode(darkMode, colors.gold, colors.black),
+
+              color : verifyDarkMode(darkMode, colors.gold, colors.black)
             }}
-          /> */}
+          />
 
           {dataCharacters.isLoading ? (
             <Loading
@@ -104,13 +109,22 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
               )}></Loading>
           ) : (
             <>
-              <FlatList
-                numColumns={2}
-                data={dataCharacters.data.results}
-                keyExtractor={(item) => item.id}
-                renderItem={renderItem}
-                onEndReachedThreshold={0.01}
-              />
+              {dataCharacters.data.error ? (
+                <TextRegular
+                pt={50}
+                  color={verifyDarkMode(darkMode, colors.gold, colors.black)}
+                  size={16}>
+                  Nobody found. Are you seeing the serie?
+                </TextRegular>
+              ) : (
+                <FlatList
+                  numColumns={2}
+                  data={dataCharacters.data.results}
+                  keyExtractor={(item) => item.id}
+                  renderItem={renderItem}
+                  onEndReachedThreshold={0.01}
+                />
+              )}
             </>
           )}
         </Box>
@@ -118,41 +132,53 @@ function Home({navigation, _getCharacters, darkMode, dataCharacters}) {
           <></>
         ) : (
           <>
-            <Box
-            pr={8}
-            style={{justifyContent: 'space-between'}}
-            pl={8}
-            pt={8}
-            flex={0.1}
-            fd={'row'}
-            bg={'transparent'}>
-            <Button
-              bgColor={verifyDarkMode(darkMode, colors.gold, colors.black)}
-              name="Previous Page"
-              fontSize={18}
-              textColor={verifyDarkMode(darkMode, colors.black, colors.gold)}
-              radius={6}
-              onPress={() => {
-                paginate('prev');
-              }}
-              disable={isNull(dataCharacters.data.info.prev) ? true : false}
-              width={'49%'}
-              mr={2}
-            />
+            {dataCharacters.data.error ? (
+              <></>
+            ) : (
+              <Box
+                pr={8}
+                style={{justifyContent: 'space-between'}}
+                pl={8}
+                pt={8}
+                flex={0.1}
+                fd={'row'}
+                bg={'transparent'}>
+                <Button
+                  bgColor={verifyDarkMode(darkMode, colors.gold, colors.black)}
+                  name="Previous Page"
+                  fontSize={18}
+                  textColor={verifyDarkMode(
+                    darkMode,
+                    colors.black,
+                    colors.gold,
+                  )}
+                  radius={6}
+                  onPress={() => {
+                    paginate('prev');
+                  }}
+                  disable={isNull(dataCharacters.data.info.prev) ? true : false}
+                  width={'49%'}
+                  mr={2}
+                />
 
-            <Button
-              bgColor={verifyDarkMode(darkMode, colors.gold, colors.black)}
-              name="Next Page"
-              fontSize={18}
-              textColor={verifyDarkMode(darkMode, colors.black, colors.gold)}
-              radius={6}
-              onPress={() => {
-                paginate('next');
-              }}
-              disable={isNull(dataCharacters.data.info.next) ? true : false}
-              width={'49%'}
-            />
-          </Box>
+                <Button
+                  bgColor={verifyDarkMode(darkMode, colors.gold, colors.black)}
+                  name="Next Page"
+                  fontSize={18}
+                  textColor={verifyDarkMode(
+                    darkMode,
+                    colors.black,
+                    colors.gold,
+                  )}
+                  radius={6}
+                  onPress={() => {
+                    paginate('next');
+                  }}
+                  disable={isNull(dataCharacters.data.info.next) ? true : false}
+                  width={'49%'}
+                />
+              </Box>
+            )}
           </>
         )}
       </BoxSafe>
